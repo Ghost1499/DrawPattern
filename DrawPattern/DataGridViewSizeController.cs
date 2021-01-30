@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsInput;
+using DrawPattern.Exceptions;
 
 namespace DrawPattern
 {
@@ -89,27 +90,63 @@ namespace DrawPattern
         }
         public void AddColumn(int count = 1)
         {
-            ColumnCount += count;
-            ChangeSize();
+            try
+            {
+                ColumnCount += count;
+                ChangeSize();
+                patternField.AddColumns(count);
+
+            }
+            catch (BaseException ex)
+            {
+                Log.Write(ex);
+                MessageBox.Show("Ошибка добавления столбцов", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void AddRow(int count = 1)
         {
-            RowCount += count;
-            ChangeSize();
+            try
+            {
 
+                RowCount += count;
+                ChangeSize();
+                patternField.AddRows(count);
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex);
+                MessageBox.Show("Ошибка добавления строк", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         public void DeleteColumn(int count = 1)
         {
-            ColumnCount -= count;
-            ChangeSize();
+            try
+            {
+                ColumnCount -= count;
+                ChangeSize();
+                patternField.DeleteColumns(count);
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex);
+                MessageBox.Show("Ошибка удаления столбцов", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void DeleteRow(int count = 1)
         {
-            RowCount -= count;
-            ChangeSize();
-
+            try
+            {
+                RowCount -= count;
+                ChangeSize();
+                patternField.DeleteRows(count);
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex);
+                MessageBox.Show("Ошибка удаления строк", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void SetColumns(int count)

@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="DataGridViewBehaiviorController.cs" />
     <Compile Include="DataGridViewSizeController.cs" />
+    <Compile Include="Exceptions\BaseException.cs" />
+    <Compile Include="Exceptions\FieldIndexOutOfRangeException.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

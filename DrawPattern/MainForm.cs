@@ -32,6 +32,14 @@ namespace DrawPattern
             ExtensionMethods.DoubleBuffered(dataGridView, true);
             settingsPanel.Location =new Point(dataGridView.Location.X +dataGridView.Width + dataGridView.Margin.Right+settingsPanel.Margin.Left,settingsPanel.Location.Y);
             settingsPanel.Width = this.Width-settingsPanel.Location.X-settingsPanel.Margin.Right;
+
+            //saveFieldFileDialog.CreatePrompt = true;
+            saveFieldFileDialog.OverwritePrompt = true;
+            saveFieldFileDialog.DefaultExt = "txt";
+            saveFieldFileDialog.AddExtension = true;
+            saveFieldFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            //eventLog.
         }
 
         private void addColumnButton_Click(object sender, EventArgs e)
@@ -102,6 +110,18 @@ namespace DrawPattern
             {
                 MessageBox.Show("Неверные значения размеров поля");
             }
+        }
+
+        private void printToFileButton_Click(object sender, EventArgs e)
+        {
+            
+            if (saveFieldFileDialog.ShowDialog() == DialogResult.Cancel)
+                return;
+            string filename = saveFieldFileDialog.FileName;
+
+            // сохраняем текст в файл
+            dataGridViewController.SaveToFile(filename);
+            MessageBox.Show("Файл сохранен");
         }
     }
 

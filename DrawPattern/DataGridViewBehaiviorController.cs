@@ -15,14 +15,19 @@ namespace DrawPattern
         PatternField patternField;
         public Color ActiveCellColor { get; set; }
         public Color InactiveCellColor { get; set; }
-        const int maxColumnsCount = 30;
-        const int maxRowsCount = 30;
+        const int maxColumnsCount = 55;
+        const int maxRowsCount = 55;
         const int minColumnsCount = 1;
         const int minRowsCount = 1;
 
-        public DataGridViewBehaiviorController(DataGridView dataGridView, int width = 5, int height = 5)
+        public char SelectChar { get; private set; }
+        public char UnselectChar { get; private set; }
+
+        public DataGridViewBehaiviorController(DataGridView dataGridView, int width = 20, int height = 20, char selectChar='1', char unselectChar='.')
         {
             this.dataGridView = dataGridView ?? throw new ArgumentNullException(nameof(dataGridView));
+            SelectChar = selectChar;
+            UnselectChar = unselectChar;
             //inputSimulator = new InputSimulator();
             SetUpDataGridView();
             SetUpSize(width,height);
@@ -32,15 +37,31 @@ namespace DrawPattern
 
         private DataGridViewCell GetCell(int row,int column)
         {
-            return dataGridView[column,row];
+            try
+            {
+                return dataGridView[column,row];
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         private void Select(int row, int column, bool isUnselect=false)
         {
-            if(isUnselect)
+            if (isUnselect)
+            {
                 GetCell(row, column).Style.BackColor = InactiveCellColor;
+                patternField.Set(row, column, UnselectChar);
+            }
             else
+            {
                 GetCell(row, column).Style.BackColor = ActiveCellColor;
+                patternField.Set(row, column, SelectChar);
+            }
+
         }
         private void Unselect(int row, int column)
         {
@@ -95,7 +116,7 @@ namespace DrawPattern
 
         private void SetUp(int width, int heigth)
         {
-            patternField = new PatternField(width, heigth);
+            patternField = new PatternField(width, heigth,UnselectChar);
             if(dataGridView.CurrentCell!=null)
                 dataGridView.CurrentCell.Selected = false;
             dataGridView.MultiSelect = false;
@@ -103,43 +124,78 @@ namespace DrawPattern
             //dataGridView.LostFocus += DataGridView_LostFocus;
 
 
-            dataGridView.CellMouseClick += cellMouseClick;
+            dataGridView.CellMouseDown += CellMouseDown;
+            dataGridView.MouseUp += MouseUp;
             dataGridView.SelectionChanged += selectionChanged;
 
             ActiveCellColor = Color.Green;
             InactiveCellColor = dataGridView.DefaultCellStyle.BackColor;
 
-
-
         }
 
-        //public void ControlKeyDown()
-        //{
-        //    inputSimulator.Keyboard.KeyDown(WindowsInput.Native.VirtualKeyCode.CONTROL);
-
-        //}
-        //public void ControlKeyUp()
-        //{
-        //    inputSimulator.Keyboard.KeyUp(WindowsInput.Native.VirtualKeyCode.CONTROL);
-        //}
-
-        //private void DataGridView_GotFocus(object sender, EventArgs e)
-        //{
-        //    ControlKeyDown();
-        //}
-
-
-        //private void DataGridView_LostFocus(object sender, EventArgs e)
-        //{
-        //    ControlKeyUp();
-
-        //}
-
-        private void cellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void CellMouseEnterSelect(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
                 DataGridView dataGridView = (DataGridView)sender;
+                if(e.RowIndex>=0 && e.ColumnIndex>=0)
+                {
+                    bool isSelected = IsSelected(e.RowIndex, e.ColumnIndex);
+                    if (!isSelected)
+                    {
+                        Select(e.RowIndex, e.ColumnIndex);
+
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+        private void CellMouseEnterUnselect(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                DataGridView dataGridView = (DataGridView)sender;
+                if (e.RowIndex >=0 && e.ColumnIndex >= 0)
+                {
+                    bool isSelected = IsSelected(e.RowIndex, e.ColumnIndex);
+                    if (isSelected)
+                    {
+                        Unselect(e.RowIndex, e.ColumnIndex);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void MouseUp(object sender, MouseEventArgs e)
+        {
+            StopSelectCells(sender, e);
+        }
+        private void StopSelectCells(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                dataGridView.CellMouseEnter -= CellMouseEnterSelect;
+            else if (e.Button == MouseButtons.Right)
+            {
+                dataGridView.CellMouseEnter -= CellMouseEnterUnselect;
+
+            }
+        }
+
+
+        private void CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                DataGridView dataGridView = (DataGridView)sender;
+
+
                 if (e.RowIndex < 0 && e.ColumnIndex < 0)
                 {
                     if (e.Button == MouseButtons.Left)
@@ -171,6 +227,14 @@ namespace DrawPattern
                 }
                 else
                 {
+
+                    if (e.Button == MouseButtons.Left)
+                        dataGridView.CellMouseEnter += CellMouseEnterSelect;
+                    else if (e.Button == MouseButtons.Right)
+                    {
+                        dataGridView.CellMouseEnter += CellMouseEnterUnselect;
+
+                    }
                     bool isSelected = IsSelected(e.RowIndex, e.ColumnIndex);
                     if (e.Button == MouseButtons.Left && !isSelected)
                     {
@@ -183,8 +247,9 @@ namespace DrawPattern
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                Log.Write(ex);
 
             }
         }
@@ -201,6 +266,11 @@ namespace DrawPattern
             // finally, clear the selection & resume (reenable) the SelectionChanged event 
             this.dataGridView.ClearSelection();
             this.dataGridView.SelectionChanged += selectionChanged;
+        }
+
+        public void SaveToFile(string filename)
+        {
+            patternField.PrintToFile(filename);
         }
     }
 }

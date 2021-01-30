@@ -36,18 +36,22 @@
             this.addRowButton = new System.Windows.Forms.Button();
             this.deleteRowButton = new System.Windows.Forms.Button();
             this.settingsPanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.addColumnsTextbox = new System.Windows.Forms.TextBox();
-            this.deleteColumnsTextbox = new System.Windows.Forms.TextBox();
-            this.addRowsTextbox = new System.Windows.Forms.TextBox();
-            this.deleteRowsTextbox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.columnTextbox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.rowTextbox = new System.Windows.Forms.TextBox();
             this.changeDGVCountButton = new System.Windows.Forms.Button();
+            this.rowTextbox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.columnTextbox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.deleteRowsTextbox = new System.Windows.Forms.TextBox();
+            this.addRowsTextbox = new System.Windows.Forms.TextBox();
+            this.deleteColumnsTextbox = new System.Windows.Forms.TextBox();
+            this.addColumnsTextbox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.printToFileButton = new System.Windows.Forms.Button();
+            this.saveFieldFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.eventLog = new System.Diagnostics.EventLog();
             ((System.ComponentModel.ISupportInitialize)(this.mainGridView)).BeginInit();
             this.settingsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -143,6 +147,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsPanel.AutoSize = true;
             this.settingsPanel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.settingsPanel.Controls.Add(this.printToFileButton);
             this.settingsPanel.Controls.Add(this.changeDGVCountButton);
             this.settingsPanel.Controls.Add(this.rowTextbox);
             this.settingsPanel.Controls.Add(this.label3);
@@ -163,58 +168,22 @@
             this.settingsPanel.Size = new System.Drawing.Size(654, 485);
             this.settingsPanel.TabIndex = 7;
             // 
-            // label1
+            // changeDGVCountButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 206);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 25);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
+            this.changeDGVCountButton.Location = new System.Drawing.Point(325, 96);
+            this.changeDGVCountButton.Name = "changeDGVCountButton";
+            this.changeDGVCountButton.Size = new System.Drawing.Size(119, 42);
+            this.changeDGVCountButton.TabIndex = 16;
+            this.changeDGVCountButton.Text = "Принять";
+            this.changeDGVCountButton.UseVisualStyleBackColor = true;
+            this.changeDGVCountButton.Click += new System.EventHandler(this.changeDGVCountButton_Click);
             // 
-            // addColumnsTextbox
+            // rowTextbox
             // 
-            this.addColumnsTextbox.Location = new System.Drawing.Point(231, 14);
-            this.addColumnsTextbox.Name = "addColumnsTextbox";
-            this.addColumnsTextbox.Size = new System.Drawing.Size(59, 30);
-            this.addColumnsTextbox.TabIndex = 8;
-            // 
-            // deleteColumnsTextbox
-            // 
-            this.deleteColumnsTextbox.Location = new System.Drawing.Point(231, 55);
-            this.deleteColumnsTextbox.Name = "deleteColumnsTextbox";
-            this.deleteColumnsTextbox.Size = new System.Drawing.Size(59, 30);
-            this.deleteColumnsTextbox.TabIndex = 9;
-            // 
-            // addRowsTextbox
-            // 
-            this.addRowsTextbox.Location = new System.Drawing.Point(231, 96);
-            this.addRowsTextbox.Name = "addRowsTextbox";
-            this.addRowsTextbox.Size = new System.Drawing.Size(59, 30);
-            this.addRowsTextbox.TabIndex = 10;
-            // 
-            // deleteRowsTextbox
-            // 
-            this.deleteRowsTextbox.Location = new System.Drawing.Point(231, 137);
-            this.deleteRowsTextbox.Name = "deleteRowsTextbox";
-            this.deleteRowsTextbox.Size = new System.Drawing.Size(59, 30);
-            this.deleteRowsTextbox.TabIndex = 11;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(320, 14);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(217, 25);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Количество столбцов";
-            // 
-            // columnTextbox
-            // 
-            this.columnTextbox.Location = new System.Drawing.Point(543, 14);
-            this.columnTextbox.Name = "columnTextbox";
-            this.columnTextbox.Size = new System.Drawing.Size(50, 30);
-            this.columnTextbox.TabIndex = 13;
+            this.rowTextbox.Location = new System.Drawing.Point(543, 55);
+            this.rowTextbox.Name = "rowTextbox";
+            this.rowTextbox.Size = new System.Drawing.Size(50, 30);
+            this.rowTextbox.TabIndex = 15;
             // 
             // label3
             // 
@@ -225,22 +194,72 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "Количество строк";
             // 
-            // rowTextbox
+            // columnTextbox
             // 
-            this.rowTextbox.Location = new System.Drawing.Point(543, 55);
-            this.rowTextbox.Name = "rowTextbox";
-            this.rowTextbox.Size = new System.Drawing.Size(50, 30);
-            this.rowTextbox.TabIndex = 15;
+            this.columnTextbox.Location = new System.Drawing.Point(543, 14);
+            this.columnTextbox.Name = "columnTextbox";
+            this.columnTextbox.Size = new System.Drawing.Size(50, 30);
+            this.columnTextbox.TabIndex = 13;
             // 
-            // changeDGVCountButton
+            // label2
             // 
-            this.changeDGVCountButton.Location = new System.Drawing.Point(325, 96);
-            this.changeDGVCountButton.Name = "changeDGVCountButton";
-            this.changeDGVCountButton.Size = new System.Drawing.Size(119, 42);
-            this.changeDGVCountButton.TabIndex = 16;
-            this.changeDGVCountButton.Text = "Принять";
-            this.changeDGVCountButton.UseVisualStyleBackColor = true;
-            this.changeDGVCountButton.Click += new System.EventHandler(this.changeDGVCountButton_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(320, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(217, 25);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Количество столбцов";
+            // 
+            // deleteRowsTextbox
+            // 
+            this.deleteRowsTextbox.Location = new System.Drawing.Point(231, 137);
+            this.deleteRowsTextbox.Name = "deleteRowsTextbox";
+            this.deleteRowsTextbox.Size = new System.Drawing.Size(59, 30);
+            this.deleteRowsTextbox.TabIndex = 11;
+            // 
+            // addRowsTextbox
+            // 
+            this.addRowsTextbox.Location = new System.Drawing.Point(231, 96);
+            this.addRowsTextbox.Name = "addRowsTextbox";
+            this.addRowsTextbox.Size = new System.Drawing.Size(59, 30);
+            this.addRowsTextbox.TabIndex = 10;
+            // 
+            // deleteColumnsTextbox
+            // 
+            this.deleteColumnsTextbox.Location = new System.Drawing.Point(231, 55);
+            this.deleteColumnsTextbox.Name = "deleteColumnsTextbox";
+            this.deleteColumnsTextbox.Size = new System.Drawing.Size(59, 30);
+            this.deleteColumnsTextbox.TabIndex = 9;
+            // 
+            // addColumnsTextbox
+            // 
+            this.addColumnsTextbox.Location = new System.Drawing.Point(231, 14);
+            this.addColumnsTextbox.Name = "addColumnsTextbox";
+            this.addColumnsTextbox.Size = new System.Drawing.Size(59, 30);
+            this.addColumnsTextbox.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 314);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(64, 25);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "label1";
+            // 
+            // printToFileButton
+            // 
+            this.printToFileButton.Location = new System.Drawing.Point(3, 217);
+            this.printToFileButton.Name = "printToFileButton";
+            this.printToFileButton.Size = new System.Drawing.Size(192, 42);
+            this.printToFileButton.TabIndex = 17;
+            this.printToFileButton.Text = "Сохранить в файл";
+            this.printToFileButton.UseVisualStyleBackColor = true;
+            this.printToFileButton.Click += new System.EventHandler(this.printToFileButton_Click);
+            // 
+            // eventLog
+            // 
+            this.eventLog.SynchronizingObject = this;
             // 
             // MainForm
             // 
@@ -252,6 +271,7 @@
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
             this.DoubleBuffered = true;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "DrawPattern";
@@ -260,6 +280,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.mainGridView)).EndInit();
             this.settingsPanel.ResumeLayout(false);
             this.settingsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -285,6 +306,9 @@
         private System.Windows.Forms.TextBox rowTextbox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button changeDGVCountButton;
+        private System.Windows.Forms.Button printToFileButton;
+        private System.Windows.Forms.SaveFileDialog saveFieldFileDialog;
+        private System.Diagnostics.EventLog eventLog;
     }
 }
 
