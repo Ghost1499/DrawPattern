@@ -13,7 +13,7 @@ namespace DrawPattern
     public partial class MainForm : Form
     {
         DataGridView dataGridView;
-        DataGridViewController dataGridViewController;
+        DataGridViewBehaiviorController dataGridViewController;
         public MainForm()
         {
             InitializeComponent();
@@ -21,61 +21,89 @@ namespace DrawPattern
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SetUpDataGridView();
-            dataGridViewController = new DataGridViewController(dataGridView);
-        }
 
-        private void SetUpDataGridView()
-        {
             dataGridView = mainGridView;
-
-            dataGridView.ColumnCount = 5;
-            dataGridView.RowCount = 5;
-            int columnCount = 5, rowCount = 5;
-            int width = this.Width * 3 / 4;
-            int heigth = this.Height*3/4 ;
-            int cellWidth = width / (columnCount + 1);
-            int cellHeigth = heigth / (rowCount+ 1);
-            if (cellWidth > cellHeigth)
-            {
-                cellWidth = cellHeigth;
-            }
-            else if (cellWidth < cellHeigth)
-            {
-                cellHeigth = cellWidth;
-            }
-            width = cellWidth * (columnCount + 1)+2;
-            heigth = cellHeigth * (rowCount + 1)+2;
-            foreach (DataGridViewColumn column in dataGridView.Columns)
-            {
-                column.Width = cellWidth;
-            }
-            foreach (DataGridViewRow row in dataGridView.Rows)
-            {
-                row.Height= cellHeigth;
-            }
-
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridView.RowHeadersWidth = cellWidth;
-            dataGridView.ColumnHeadersHeight = cellHeigth;
-            dataGridView.Width = width;
-            dataGridView.Height = heigth;
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            //dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font(dataGridView.Font, FontStyle.Bold);
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridView.GridColor = Color.Black;
-            dataGridView.RowHeadersVisible = true;
-            dataGridView.ColumnHeadersVisible = true;
-
-            dataGridView.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect;
-            dataGridView.MultiSelect = true;
+            dataGridViewController = new DataGridViewBehaiviorController(dataGridView);
+            SetUpForm();
         }
 
+        private void SetUpForm()
+        {
+            ExtensionMethods.DoubleBuffered(dataGridView, true);
+            settingsPanel.Location =new Point(dataGridView.Location.X +dataGridView.Width + dataGridView.Margin.Right+settingsPanel.Margin.Left,settingsPanel.Location.Y);
+            settingsPanel.Width = this.Width-settingsPanel.Location.X-settingsPanel.Margin.Right;
+        }
 
+        private void addColumnButton_Click(object sender, EventArgs e)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            // ваш код
+            int value;
+            if(int.TryParse( addColumnsTextbox.Text,out value))
+                dataGridViewController.AddColumn(value);
+            else
+                dataGridViewController.AddColumn();
+            watch.Stop();
+            label1.Text = watch.ElapsedMilliseconds.ToString();
+        }
+
+        private void deleteColumnButton_Click(object sender, EventArgs e)
+        {
+            int value;
+            if (int.TryParse(deleteColumnsTextbox.Text, out value))
+                dataGridViewController.DeleteColumn(value);
+            else
+                dataGridViewController.DeleteColumn();
+
+
+        }
+
+        private void addRowButton_Click(object sender, EventArgs e)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            // ваш код
+            int value;
+            if (int.TryParse(addRowsTextbox.Text, out value))
+                dataGridViewController.AddRow(value);
+            else
+                dataGridViewController.AddRow();
+            watch.Stop();
+            label1.Text=watch.ElapsedMilliseconds.ToString();
+
+        }
+
+        private void deleteRowButton_Click(object sender, EventArgs e)
+        {
+            int value;
+            if (int.TryParse(deleteRowsTextbox.Text, out value))
+                dataGridViewController.DeleteRow(value);
+            else
+                dataGridViewController.DeleteRow();
+
+        }
+
+        private void changeDGVCountButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int columns, rows;
+                if (int.TryParse(columnTextbox.Text, out columns) && int.TryParse(rowTextbox.Text, out rows))
+                {
+                    dataGridViewController.SetColumns(columns);
+                    dataGridViewController.SetRows(rows);
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Неверные значения размеров поля");
+            }
+        }
     }
+
+    
 }
