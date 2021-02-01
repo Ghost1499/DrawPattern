@@ -49,8 +49,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataGridViewBehaiviorController.cs" />
-    <Compile Include="DataGridViewSizeController.cs" />
+    <Compile Include="CanvasTable.cs" />
+    <Compile Include="CanvasTableCell.cs" />
+    <Compile Include="Exceptions\DrawCellByPointException.cs" />
+    <Compile Include="Exceptions\FindCellByPointException.cs" />
+    <Compile Include="TableBehaiviorController.cs" />
+    <Compile Include="TableSizeController.cs" />
     <Compile Include="Exceptions\BaseException.cs" />
     <Compile Include="Exceptions\FieldIndexOutOfRangeException.cs" />
     <Compile Include="Form1.cs">

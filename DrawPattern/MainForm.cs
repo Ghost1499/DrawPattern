@@ -12,8 +12,7 @@ namespace DrawPattern
 {
     public partial class MainForm : Form
     {
-        DataGridView dataGridView;
-        DataGridViewBehaiviorController dataGridViewController;
+        TableController dataGridViewController;
         public MainForm()
         {
             InitializeComponent();
@@ -21,23 +20,28 @@ namespace DrawPattern
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
-            dataGridView = mainGridView;
-            dataGridViewController = new DataGridViewBehaiviorController(dataGridView);
+            dataGridViewController = new TableController(pictureBox);
             SetUpForm();
+
+            
         }
 
         private void SetUpForm()
         {
-            ExtensionMethods.DoubleBuffered(dataGridView, true);
-            settingsPanel.Location =new Point(dataGridView.Location.X +dataGridView.Width + dataGridView.Margin.Right+settingsPanel.Margin.Left,settingsPanel.Location.Y);
+            //ExtensionMethods.DoubleBuffered(pictureBox, true);
+            settingsPanel.Location =new Point(pictureBox.Location.X +pictureBox.Width + pictureBox.Margin.Right+settingsPanel.Margin.Left,settingsPanel.Location.Y);
             settingsPanel.Width = this.Width-settingsPanel.Location.X-settingsPanel.Margin.Right;
+            this.SetStyle(ControlStyles.UserPaint
+                | ControlStyles.AllPaintingInWmPaint
+                | ControlStyles.OptimizedDoubleBuffer
+                | ControlStyles.ResizeRedraw, true);
 
             //saveFieldFileDialog.CreatePrompt = true;
             saveFieldFileDialog.OverwritePrompt = true;
             saveFieldFileDialog.DefaultExt = "txt";
             saveFieldFileDialog.AddExtension = true;
             saveFieldFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
 
             //eventLog.
         }

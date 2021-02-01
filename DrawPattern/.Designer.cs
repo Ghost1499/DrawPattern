@@ -30,12 +30,12 @@
         {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
-            this.mainGridView = new System.Windows.Forms.DataGridView();
             this.addColumnButton = new System.Windows.Forms.Button();
             this.deleteColumnButton = new System.Windows.Forms.Button();
             this.addRowButton = new System.Windows.Forms.Button();
             this.deleteRowButton = new System.Windows.Forms.Button();
             this.settingsPanel = new System.Windows.Forms.Panel();
+            this.printToFileButton = new System.Windows.Forms.Button();
             this.changeDGVCountButton = new System.Windows.Forms.Button();
             this.rowTextbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,12 +46,12 @@
             this.deleteColumnsTextbox = new System.Windows.Forms.TextBox();
             this.addColumnsTextbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.printToFileButton = new System.Windows.Forms.Button();
             this.saveFieldFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.eventLog = new System.Diagnostics.EventLog();
-            ((System.ComponentModel.ISupportInitialize)(this.mainGridView)).BeginInit();
+            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.settingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -71,23 +71,6 @@
             this.toolStrip.Size = new System.Drawing.Size(1585, 25);
             this.toolStrip.TabIndex = 1;
             this.toolStrip.Text = "toolStrip1";
-            // 
-            // mainGridView
-            // 
-            this.mainGridView.AllowUserToAddRows = false;
-            this.mainGridView.AllowUserToDeleteRows = false;
-            this.mainGridView.AllowUserToResizeColumns = false;
-            this.mainGridView.AllowUserToResizeRows = false;
-            this.mainGridView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.mainGridView.Location = new System.Drawing.Point(22, 70);
-            this.mainGridView.Name = "mainGridView";
-            this.mainGridView.ReadOnly = true;
-            this.mainGridView.RowTemplate.Height = 28;
-            this.mainGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.mainGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.mainGridView.Size = new System.Drawing.Size(761, 439);
-            this.mainGridView.TabIndex = 2;
             // 
             // addColumnButton
             // 
@@ -168,6 +151,16 @@
             this.settingsPanel.Size = new System.Drawing.Size(654, 485);
             this.settingsPanel.TabIndex = 7;
             // 
+            // printToFileButton
+            // 
+            this.printToFileButton.Location = new System.Drawing.Point(3, 217);
+            this.printToFileButton.Name = "printToFileButton";
+            this.printToFileButton.Size = new System.Drawing.Size(192, 42);
+            this.printToFileButton.TabIndex = 17;
+            this.printToFileButton.Text = "Сохранить в файл";
+            this.printToFileButton.UseVisualStyleBackColor = true;
+            this.printToFileButton.Click += new System.EventHandler(this.printToFileButton_Click);
+            // 
             // changeDGVCountButton
             // 
             this.changeDGVCountButton.Location = new System.Drawing.Point(325, 96);
@@ -247,27 +240,25 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "label1";
             // 
-            // printToFileButton
-            // 
-            this.printToFileButton.Location = new System.Drawing.Point(3, 217);
-            this.printToFileButton.Name = "printToFileButton";
-            this.printToFileButton.Size = new System.Drawing.Size(192, 42);
-            this.printToFileButton.TabIndex = 17;
-            this.printToFileButton.Text = "Сохранить в файл";
-            this.printToFileButton.UseVisualStyleBackColor = true;
-            this.printToFileButton.Click += new System.EventHandler(this.printToFileButton_Click);
-            // 
             // eventLog
             // 
             this.eventLog.SynchronizingObject = this;
+            // 
+            // pictureBox
+            // 
+            this.pictureBox.Location = new System.Drawing.Point(0, 70);
+            this.pictureBox.Name = "pictureBox";
+            this.pictureBox.Size = new System.Drawing.Size(913, 485);
+            this.pictureBox.TabIndex = 8;
+            this.pictureBox.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1585, 567);
+            this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.settingsPanel);
-            this.Controls.Add(this.mainGridView);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.menuStrip);
             this.DoubleBuffered = true;
@@ -277,10 +268,10 @@
             this.Text = "DrawPattern";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.mainGridView)).EndInit();
             this.settingsPanel.ResumeLayout(false);
             this.settingsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -290,7 +281,6 @@
 
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStrip toolStrip;
-        private System.Windows.Forms.DataGridView mainGridView;
         private System.Windows.Forms.Button addColumnButton;
         private System.Windows.Forms.Button deleteColumnButton;
         private System.Windows.Forms.Button addRowButton;
@@ -309,6 +299,7 @@
         private System.Windows.Forms.Button printToFileButton;
         private System.Windows.Forms.SaveFileDialog saveFieldFileDialog;
         private System.Diagnostics.EventLog eventLog;
+        private System.Windows.Forms.PictureBox pictureBox;
     }
 }
 

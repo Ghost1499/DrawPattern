@@ -15,27 +15,56 @@ namespace DrawPattern
         Bitmap Bitmap;
         Graphics graphics;
         Point prev;
+        int borderWidth;
         public Form1()
         {
             InitializeComponent();
-            Bitmap = new Bitmap(this.Width, this.Height);
-            this.BackgroundImage = Bitmap;
+            Bitmap = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            //this.BackgroundImage = Bitmap;
+            pictureBox1.Image = Bitmap;
             graphics = Graphics.FromImage(Bitmap);
             graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
 
+            borderWidth = 1;
+            int columnCount=50, rowCount = 50;
+            double cellWidth, cellHeight;
+            cellWidth = Bitmap.Width / columnCount;
+            cellHeight = Bitmap.Height / rowCount;
+
+            pictureBox1.MouseDown += pictureBox1_MouseDown;
+            pictureBox1.MouseUp += pictureBox1_MouseUp;
+            CreateGrid(cellWidth, cellHeight, columnCount, rowCount, borderWidth);
             //graphics = this.CreateGraphics();
         }
 
+
+        private void CreateGrid(double cellWidth, double cellHeight, int columnCount, int rowCount, int borderWidth)
+        {
+            double x=0, y=0;
+            int rx, ry;
+            for (int i = 0; i <= columnCount+1; i++)
+            {
+                rx = (int)Math.Round(x);
+                graphics.DrawLine(new Pen(Brushes.Black), rx, 0, rx, Bitmap.Height - 1);
+                x += cellWidth;
+            }
+            for (int i = 0; i <= rowCount+1; i++)
+            {
+                ry = (int)Math.Round(y);
+                graphics.DrawLine(new Pen(Brushes.Black),0, ry, Bitmap.Width - 1,ry);
+                y += cellHeight;
+            }
+        }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            this.MouseMove += PictureBox1_MouseMove;
+            pictureBox1.MouseMove += PictureBox1_MouseMove;
         }
 
         private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
             Draw(e);
-            Invalidate();
+            pictureBox1.Invalidate();
         }
 
         private void Draw(MouseEventArgs e)
@@ -76,7 +105,7 @@ namespace DrawPattern
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            this.MouseMove -= PictureBox1_MouseMove;
+            pictureBox1.MouseMove -= PictureBox1_MouseMove;
             prev = Point.Empty;
         }
     }

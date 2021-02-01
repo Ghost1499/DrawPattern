@@ -9,12 +9,14 @@ using WindowsInput;
 
 namespace DrawPattern
 {
-    public partial class DataGridViewBehaiviorController
+    public partial class TableController
     {
-        DataGridView dataGridView;
         PatternField patternField;
+        CanvasTable canvasTable;
+        Point prev;
         public Color ActiveCellColor { get; set; }
         public Color InactiveCellColor { get; set; }
+        Dictionary<MouseButtons, Color> drawColorsDictionary;
         const int maxColumnsCount = 55;
         const int maxRowsCount = 55;
         const int minColumnsCount = 1;
@@ -23,31 +25,26 @@ namespace DrawPattern
         public char SelectChar { get; private set; }
         public char UnselectChar { get; private set; }
 
-        public DataGridViewBehaiviorController(DataGridView dataGridView, int width = 20, int height = 20, char selectChar='1', char unselectChar='.')
+        public TableController(PictureBox pictureBox, int rows = 20, int columns = 20, char selectChar='1', char unselectChar='.')
         {
-            this.dataGridView = dataGridView ?? throw new ArgumentNullException(nameof(dataGridView));
+            this.pictureBox = pictureBox ?? throw new ArgumentNullException(nameof(pictureBox));
             SelectChar = selectChar;
             UnselectChar = unselectChar;
+            ActiveCellColor = Color.Green;
+            InactiveCellColor = pictureBox.BackColor;
+            prev = Point.Empty;
+
+            canvasTable = new CanvasTable(pictureBox, rows, columns);
+            patternField = new PatternField(rows, columns, UnselectChar);
+
             //inputSimulator = new InputSimulator();
-            SetUpDataGridView();
-            SetUpSize(width,height);
-            SetUp(width, height);
+            SetUpSize(rows,columns);
+            SetUpCanvasControl();
+            SetUp();
         }
 
 
-        private DataGridViewCell GetCell(int row,int column)
-        {
-            try
-            {
-                return dataGridView[column,row];
 
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
 
         private void Select(int row, int column, bool isUnselect=false)
         {
@@ -70,7 +67,7 @@ namespace DrawPattern
 
         private void SelectRow(int row, bool isUnselect=false)
         {
-            for (int i = 0; i < dataGridView.Columns.Count; i++)
+            for (int i = 0; i < pictureBox.Columns.Count; i++)
             {
                 Select(row, i,isUnselect);
 
@@ -78,7 +75,7 @@ namespace DrawPattern
         }
         private void SelectColumn(int column,bool isUnselect=false)
         {
-            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            for (int i = 0; i < pictureBox.Rows.Count; i++)
             {
                 Select(i, column,isUnselect);
 
@@ -94,7 +91,7 @@ namespace DrawPattern
         }
         private void SelectAll(bool isUnselect=false)
         {
-            for (int i = 0; i < dataGridView.Rows.Count; i++)
+            for (int i = 0; i < pictureBox.Rows.Count; i++)
             {
                 SelectRow(i,isUnselect);
 
@@ -114,24 +111,65 @@ namespace DrawPattern
         }
 
 
-        private void SetUp(int width, int heigth)
+        private void SetUp()
         {
-            patternField = new PatternField(width, heigth,UnselectChar);
-            if(dataGridView.CurrentCell!=null)
-                dataGridView.CurrentCell.Selected = false;
-            dataGridView.MultiSelect = false;
-            //dataGridView.GotFocus += DataGridView_GotFocus;
-            //dataGridView.LostFocus += DataGridView_LostFocus;
-
-
-            dataGridView.CellMouseDown += CellMouseDown;
-            dataGridView.MouseUp += MouseUp;
-            dataGridView.SelectionChanged += selectionChanged;
-
-            ActiveCellColor = Color.Green;
-            InactiveCellColor = dataGridView.DefaultCellStyle.BackColor;
+            pictureBox.MouseDown += MouseDown;
+            pictureBox.MouseUp += MouseUp;
 
         }
+        private void MouseDown(object sender, MouseEventArgs e)
+        {
+            pictureBox.MouseMove += MouseMove;
+        }
+
+        private void MouseMove(object sender, MouseEventArgs e)
+        {
+            Draw(e);
+            pictureBox.Invalidate();
+        }
+
+        private void MouseUp(object sender, MouseEventArgs e)
+        {
+            pictureBox.MouseMove -= MouseMove;
+            prev = Point.Empty;
+        }
+        private void Draw(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                //Bitmap.SetPixel(e.X, e.Y, Color.Green);
+                int radius = 10;
+                double dx = Math.Abs(e.X - prev.X);
+                double dy = Math.Abs(e.Y - prev.Y);
+                double dist = Math.Sqrt(dx * dx + dy * dy);
+                int distLim = 10;
+                bool fillInd = true;
+                if (dist < distLim)
+                {
+                    graphics.FillEllipse(Brushes.Green, e.X - radius, e.Y - radius, radius * 2, radius * 2);
+                    if (prev != null && !prev.IsEmpty && !fillInd)
+                    {
+                        graphics.DrawLine(new Pen(Brushes.Green, radius * 2), prev, e.Location);
+                    }
+                }
+                else
+                {
+                    if (prev != null && !prev.IsEmpty)
+                    {
+                        graphics.DrawLine(new Pen(Brushes.Green, radius * 2), prev, e.Location);
+                        fillInd = false;
+                    }
+
+                }
+                prev = e.Location;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                Bitmap.SetPixel(e.X, e.Y, Color.White);
+
+            }
+        }
+
 
         private void CellMouseEnterSelect(object sender, DataGridViewCellEventArgs e)
         {
@@ -173,17 +211,17 @@ namespace DrawPattern
             }
         }
 
-        private void MouseUp(object sender, MouseEventArgs e)
-        {
-            StopSelectCells(sender, e);
-        }
+        //private void MouseUp(object sender, MouseEventArgs e)
+        //{
+        //    StopSelectCells(sender, e);
+        //}
         private void StopSelectCells(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                dataGridView.CellMouseEnter -= CellMouseEnterSelect;
+                pictureBox.CellMouseEnter -= CellMouseEnterSelect;
             else if (e.Button == MouseButtons.Right)
             {
-                dataGridView.CellMouseEnter -= CellMouseEnterUnselect;
+                pictureBox.CellMouseEnter -= CellMouseEnterUnselect;
 
             }
         }
@@ -254,19 +292,7 @@ namespace DrawPattern
             }
         }
 
-        private void selectionChanged(object sender, EventArgs e)
-        {
-            DataGridView dataGridView = (DataGridView)sender;
-            //suppresss the SelectionChanged event
-            this.dataGridView.SelectionChanged -= selectionChanged;
-
-            //grab the selectedIndex, if needed, for use in your custom code
-            // do your custom code here
-
-            // finally, clear the selection & resume (reenable) the SelectionChanged event 
-            this.dataGridView.ClearSelection();
-            this.dataGridView.SelectionChanged += selectionChanged;
-        }
+        
 
         public void SaveToFile(string filename)
         {

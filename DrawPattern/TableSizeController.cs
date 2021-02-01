@@ -11,7 +11,7 @@ using DrawPattern.Exceptions;
 
 namespace DrawPattern
 {
-    public partial class DataGridViewBehaiviorController
+    public partial class TableController
     {
         public int Width { get; set; }
         public int Height { get; set; }
@@ -22,6 +22,9 @@ namespace DrawPattern
         public int CellWidth { get; set; }
         public int CellHeight { get; set; }
 
+        PictureBox pictureBox;
+        Bitmap bitmap;
+        Graphics graphics;
 
 
         private void SetUpSize(int width, int heigth)
@@ -33,10 +36,10 @@ namespace DrawPattern
 
         private void ChangeSize()
         {
-            Width = dataGridView.Parent.Width / 2 - 100;
-            Height = dataGridView.Parent.Height - dataGridView.Location.Y - dataGridView.Parent.Padding.Bottom - 40;
-            CellWidth = Width / ColumnCountWithHeader;
-            CellHeight = Height / RowCountWithHeader;
+            Width = pictureBox.Parent.Width / 2 - 100;
+            Height = pictureBox.Parent.Height - pictureBox.Location.Y - pictureBox.Parent.Padding.Bottom - 40;
+            CellWidth = Width / ColumnCount;
+            CellHeight = Height / RowCount;
             if (CellWidth > CellHeight)
             {
                 CellWidth = CellHeight;
@@ -45,8 +48,8 @@ namespace DrawPattern
             {
                 CellHeight = CellWidth;
             }
-            Width = CellWidth * ColumnCountWithHeader + 2;
-            Height = CellHeight * RowCountWithHeader + 2;
+            Width = CellWidth * ColumnCount;
+            Height = CellHeight * RowCount;
 
             Resize();
         }
@@ -54,40 +57,40 @@ namespace DrawPattern
 
         private void Resize()
         {
-            dataGridView.Width = Width;
-            dataGridView.Height = Height;
-            dataGridView.ColumnCount = ColumnCount;
-            dataGridView.RowCount = RowCount;
-            foreach (DataGridViewColumn column in dataGridView.Columns)
+            pictureBox.Width = Width;
+            pictureBox.Height = Height;
+            //pictureBox.ColumnCount = ColumnCount;
+            //pictureBox.RowCount = RowCount;
+            foreach (DataGridViewColumn column in pictureBox.Columns)
             {
                 column.Width = CellWidth;
             }
-            foreach (DataGridViewRow row in dataGridView.Rows)
+            foreach (DataGridViewRow row in pictureBox.Rows)
             {
                 row.Height = CellHeight;
             }
-            dataGridView.RowHeadersWidth = CellWidth;
-            dataGridView.ColumnHeadersHeight = CellHeight;
+            pictureBox.RowHeadersWidth = CellWidth;
+            pictureBox.ColumnHeadersHeight = CellHeight;
             //if (CellHeight < dataGridView.Font.Height)
             //{
             //    dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font(dataGridView.Font.FontFamily, CellHeight-2);
             //    dataGridView.RowHeadersDefaultCellStyle.Font = new Font(dataGridView.Font.FontFamily, CellHeight);
             //}
 
-            SetUpHeaders();
+            //SetUpHeaders();
         }
 
-        private void SetUpHeaders()
-        {
-            for (int i = 0; i < ColumnCount; i++)
-            {
-                dataGridView.Columns[i].Name = i.ToString();
-            }
-            for (int i = 0; i < RowCount; i++)
-            {
-                dataGridView.Rows[i].HeaderCell.Value = i.ToString();
-            }
-        }
+        //private void SetUpHeaders()
+        //{
+        //    for (int i = 0; i < ColumnCount; i++)
+        //    {
+        //        pictureBox.Columns[i].Name = i.ToString();
+        //    }
+        //    for (int i = 0; i < RowCount; i++)
+        //    {
+        //        pictureBox.Rows[i].HeaderCell.Value = i.ToString();
+        //    }
+        //}
         public void AddColumn(int count = 1)
         {
             try
@@ -176,32 +179,13 @@ namespace DrawPattern
             }
 
         }
-        private void SetUpDataGridView()
+        private void SetUpCanvasControl()
         {
+            pictureBox.Anchor = AnchorStyles.Left | AnchorStyles.Bottom | AnchorStyles.Top;
+            
+            
 
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            dataGridView.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
-            dataGridView.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridView.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridView.RowHeadersDefaultCellStyle.BackColor = Color.Navy;
-            dataGridView.RowHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridView.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //dataGridView.ColumnHeadersDefaultCellStyle.Font = new Font(dataGridView.Font, FontStyle.Bold);
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
-            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridView.GridColor = Color.Black;
-            dataGridView.RowHeadersVisible = true;
-            dataGridView.ColumnHeadersVisible = true;
-
-            dataGridView.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dataGridView.MultiSelect = true;
         }
-
-
 
     }
 
