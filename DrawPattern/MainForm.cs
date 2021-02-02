@@ -12,7 +12,7 @@ namespace DrawPattern
 {
     public partial class MainForm : Form
     {
-        TableController dataGridViewController;
+        TableController tableController;
         public MainForm()
         {
             InitializeComponent();
@@ -20,7 +20,7 @@ namespace DrawPattern
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            dataGridViewController = new TableController(pictureBox);
+            tableController = new TableController(pictureBox);
             SetUpForm();
 
             
@@ -42,45 +42,36 @@ namespace DrawPattern
             saveFieldFileDialog.AddExtension = true;
             saveFieldFileDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-
             //eventLog.
         }
 
         private void addColumnButton_Click(object sender, EventArgs e)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            // ваш код
             int value;
-            if(int.TryParse( addColumnsTextbox.Text,out value))
-                dataGridViewController.AddColumn(value);
+            if (int.TryParse(addColumnsTextbox.Text, out value))
+                tableController.AddColumn(value);
             else
-                dataGridViewController.AddColumn();
-            watch.Stop();
-            label1.Text = watch.ElapsedMilliseconds.ToString();
+                tableController.AddColumn();
         }
 
         private void deleteColumnButton_Click(object sender, EventArgs e)
         {
             int value;
             if (int.TryParse(deleteColumnsTextbox.Text, out value))
-                dataGridViewController.DeleteColumn(value);
+                tableController.DeleteColumn(value);
             else
-                dataGridViewController.DeleteColumn();
+                tableController.DeleteColumn();
 
 
         }
 
         private void addRowButton_Click(object sender, EventArgs e)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
-            // ваш код
             int value;
             if (int.TryParse(addRowsTextbox.Text, out value))
-                dataGridViewController.AddRow(value);
+                tableController.AddRow(value);
             else
-                dataGridViewController.AddRow();
-            watch.Stop();
-            label1.Text=watch.ElapsedMilliseconds.ToString();
+                tableController.AddRow();
 
         }
 
@@ -88,32 +79,32 @@ namespace DrawPattern
         {
             int value;
             if (int.TryParse(deleteRowsTextbox.Text, out value))
-                dataGridViewController.DeleteRow(value);
+                tableController.DeleteRow(value);
             else
-                dataGridViewController.DeleteRow();
+                tableController.DeleteRow();
 
         }
 
         private void changeDGVCountButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int columns, rows;
-                if (int.TryParse(columnTextbox.Text, out columns) && int.TryParse(rowTextbox.Text, out rows))
-                {
-                    dataGridViewController.SetColumns(columns);
-                    dataGridViewController.SetRows(rows);
+            //try
+            //{
+            //    int columns, rows;
+            //    if (int.TryParse(columnTextbox.Text, out columns) && int.TryParse(rowTextbox.Text, out rows))
+            //    {
+            //        dataGridViewController.SetColumns(columns);
+            //        dataGridViewController.SetRows(rows);
 
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Неверные значения размеров поля");
-            }
+            //    }
+            //    else
+            //    {
+            //        throw new Exception();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("Неверные значения размеров поля");
+            //}
         }
 
         private void printToFileButton_Click(object sender, EventArgs e)
@@ -124,7 +115,7 @@ namespace DrawPattern
             string filename = saveFieldFileDialog.FileName;
 
             // сохраняем текст в файл
-            dataGridViewController.SaveToFile(filename);
+            tableController.SaveToFile(filename);
             MessageBox.Show("Файл сохранен");
         }
     }

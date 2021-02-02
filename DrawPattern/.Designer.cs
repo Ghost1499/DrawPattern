@@ -47,10 +47,8 @@
             this.addColumnsTextbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.saveFieldFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.eventLog = new System.Diagnostics.EventLog();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.settingsPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -240,15 +238,13 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "label1";
             // 
-            // eventLog
-            // 
-            this.eventLog.SynchronizingObject = this;
-            // 
             // pictureBox
             // 
-            this.pictureBox.Location = new System.Drawing.Point(0, 70);
+            this.pictureBox.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox.Location = new System.Drawing.Point(12, 70);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(913, 485);
+            this.pictureBox.Size = new System.Drawing.Size(901, 485);
+            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox.TabIndex = 8;
             this.pictureBox.TabStop = false;
             // 
@@ -264,13 +260,13 @@
             this.DoubleBuffered = true;
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "DrawPattern";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.settingsPanel.ResumeLayout(false);
             this.settingsPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eventLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -298,7 +294,6 @@
         private System.Windows.Forms.Button changeDGVCountButton;
         private System.Windows.Forms.Button printToFileButton;
         private System.Windows.Forms.SaveFileDialog saveFieldFileDialog;
-        private System.Diagnostics.EventLog eventLog;
         private System.Windows.Forms.PictureBox pictureBox;
     }
 }

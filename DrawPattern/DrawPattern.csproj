@@ -51,18 +51,12 @@
   <ItemGroup>
     <Compile Include="CanvasTable.cs" />
     <Compile Include="CanvasTableCell.cs" />
+    <Compile Include="Exceptions\ChangeDimensionException.cs" />
     <Compile Include="Exceptions\DrawCellByPointException.cs" />
     <Compile Include="Exceptions\FindCellByPointException.cs" />
-    <Compile Include="TableBehaiviorController.cs" />
-    <Compile Include="TableSizeController.cs" />
+    <Compile Include="TableController.cs" />
     <Compile Include="Exceptions\BaseException.cs" />
     <Compile Include="Exceptions\FieldIndexOutOfRangeException.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="LogHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -74,9 +68,6 @@
     <Compile Include="PatternField.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
