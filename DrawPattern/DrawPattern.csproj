@@ -49,11 +49,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanvasTable.cs" />
-    <Compile Include="CanvasTableCell.cs" />
+    <Compile Include="GraphicField.cs" />
+    <Compile Include="GraphicFieldCell.cs" />
     <Compile Include="Exceptions\ChangeDimensionException.cs" />
     <Compile Include="Exceptions\DrawCellByPointException.cs" />
     <Compile Include="Exceptions\FindCellByPointException.cs" />
+    <Compile Include="FieldCell.cs" />
     <Compile Include="TableController.cs" />
     <Compile Include="Exceptions\BaseException.cs" />
     <Compile Include="Exceptions\FieldIndexOutOfRangeException.cs" />
@@ -65,7 +66,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PatternField.cs" />
+    <Compile Include="Field.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">

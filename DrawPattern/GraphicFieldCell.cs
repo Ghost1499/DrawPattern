@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DrawPattern
 {
-    public class CanvasTableCell
+    public class GraphicFieldCell:FieldCell
     {
         public int X { get; set; }
         public int Y { get; set; }
@@ -18,7 +18,7 @@ namespace DrawPattern
         public Color CurrentColor { get; set; }
         //public bool IsSelect { get; set; }
         public int BorderWidth { get; set; }
-        public CanvasTableCell(int borderWidth, Color defaultColor, int x=-1, int y =-1, int width =0, int height =0 )
+        public GraphicFieldCell(int borderWidth, Color defaultColor,char defaultChar, int x=-1, int y =-1, int width =0, int height =0 ):base(defaultChar)
         {
             X = x;
             Y = y;
@@ -29,6 +29,7 @@ namespace DrawPattern
             DefaultColor = defaultColor;
             CurrentColor = DefaultColor;
         }
+
 
         public bool IsPointInCell(int x, int y)
         {
@@ -96,8 +97,14 @@ namespace DrawPattern
             return rectangle;
         }
 
-        public void FillCell(Graphics graphics, Color color)
+        protected new void Select(char c)
         {
+            base.Select(c);
+        }
+
+        public void Select(char c, Graphics graphics, Color color)
+        {
+            Select(c);
             if ( X>= 0 && Y >= 0 && Width > 0 && Height > 0)
             {
                 if (CurrentColor != color)

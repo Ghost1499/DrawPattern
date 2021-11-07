@@ -9,20 +9,17 @@ using DrawPattern.Exceptions;
 
 namespace DrawPattern
 {
-    public class CanvasTable
+    public class GraphicField:Field
     {
-
         PictureBox pictureBox;
         Bitmap bitmap;
         Graphics graphics;
-        List<List<CanvasTableCell>> field;
+        new List<List<GraphicFieldCell>> field;
 
         public double WidthD { get; set; }
         public int Width { get; set; }
         public double HeightD { get; set; }
         public int Height { get; set; }
-        private int RowCount { get; set; }
-        private int ColumnCount { get; set; }
         public double CellWidthD { get; set; }
         public int CellWidth { get => (int)Math.Floor(CellWidthD); }
         public double CellHeightD { get; set; }
@@ -32,14 +29,11 @@ namespace DrawPattern
         public Color DefaultColor { get; set;}
         public int BorderWidth { get; set; }
 
-        public CanvasTable(PictureBox pictureBox, int rows, int columns, int borderWidth=1)
+        public GraphicField(PictureBox pictureBox, int rows, int columns,char defaultChar,char activeChar, int borderWidth=1):base(rows,columns,defaultChar,activeChar)
         {
             this.pictureBox = pictureBox ?? throw new ArgumentNullException(nameof(pictureBox));
-            field = new List<List<CanvasTableCell>>();
+            field = new List<List<GraphicFieldCell>>();
 
-
-            RowCount = rows;
-            ColumnCount = columns;
             BorderWidth = borderWidth;
 
             //setUp();
@@ -93,15 +87,15 @@ namespace DrawPattern
                 graphics.Clear(pictureBox.BackColor);
 
                 int x = 0, y = 0;
-                CanvasTableCell cell;
+                GraphicFieldCell cell;
                 for (int i = 0; i < RowCount; i++)
                 {
                     if(field.Count <RowCount )
-                        field.Add(new List<CanvasTableCell>());
+                        field.Add(new List<GraphicFieldCell>());
                     for (int j = 0; j < ColumnCount; j++)
                     {
                         if(field[i].Count<j+1)
-                            field[i].Add(new CanvasTableCell(BorderWidth,DefaultColor,x, y, CellWidth, CellHeight));
+                            field[i].Add(new GraphicFieldCell(BorderWidth,DefaultColor,x, y, CellWidth, CellHeight));
                         else
                         {
                             cell = field[i][j];
@@ -146,15 +140,15 @@ namespace DrawPattern
             }
         }
 
-        public CanvasTableCell this[int i,int j]
+        public new GraphicFieldCell this[int i,int j]
         {
             get
             {
-                return field[i][j];
+                return base[i, j] as GraphicFieldCell; 
             }
         }
 
-        public CanvasTableCell FindCellByPoint(int x, int y, out int i, out int j)
+        public GraphicFieldCell FindCellByPoint(int x, int y, out int i, out int j)
         {
             try
             {
@@ -204,7 +198,7 @@ namespace DrawPattern
             try
             {
                 int i, j;
-                CanvasTableCell cell = FindCellByPoint(x, y,out i,out j);
+                GraphicFieldCell cell = FindCellByPoint(x, y,out i,out j);
                 cell.FillCell(graphics, color);
                 return new Point(i, j);
             }

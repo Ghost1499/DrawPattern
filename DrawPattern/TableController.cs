@@ -12,8 +12,8 @@ namespace DrawPattern
 {
     public class TableController
     {
-        PatternField patternField;
-        CanvasTable canvasTable;
+        Field patternField;
+        GraphicField canvasTable;
         PictureBox pictureBox;
         public Color ActiveCellColor { get; set; }
         public Color InactiveCellColor { get; set; }
@@ -43,8 +43,8 @@ namespace DrawPattern
             drawColorsDictionary[MouseButtons.Right] = InactiveCellColor;
 
 
-            canvasTable = new CanvasTable(pictureBox, rows, columns);
-            patternField = new PatternField(rows, columns, UnselectChar);
+            canvasTable = new GraphicField(pictureBox, rows, columns);
+            patternField = new Field(rows, columns, UnselectChar);
 
             //inputSimulator = new InputSimulator();
             SetUp();

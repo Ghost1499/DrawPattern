@@ -8,25 +8,44 @@ using DrawPattern.Exceptions;
 
 namespace DrawPattern
 {
-    public class PatternField
+    public class Field
     {
-        List<List<char>> field;
+        protected List<List<FieldCell>> field;
 
         public char DefaultChar { get; set; }
+        public char ActiveChar { get; set; }
+        public int RowCount { get; protected set; }
+        public int ColumnCount { get;protected set; }
 
-        public PatternField(int width, int height, char defaultChar )
+        public Field(int rowCount, int columnCount, char defaultChar, char activeChar )
         {
-            field = new List<List<char>>(height);
-            for (int i = 0; i < height; i++)
+            SetUp(rowCount,columnCount,defaultChar,activeChar);
+        }
+
+        protected virtual void SetUp(int rowCount, int columnCount, char defaultChar, char activeChar)
+        {
+            RowCount = rowCount;
+            ColumnCount = columnCount;
+            DefaultChar = defaultChar;
+            ActiveChar = activeChar;
+
+            field = new List<List<FieldCell>>(RowCount);
+            for (int i = 0; i < RowCount; i++)
             {
-                field.Add(new List<char>(width));
-                for (int j = 0; j < width; j++)
+                field.Add(new List<FieldCell>(ColumnCount));
+                for (int j = 0; j < ColumnCount; j++)
                 {
-                    field[i].Add(defaultChar);
+                    field[i].Add(new FieldCell(DefaultChar));
                 }
             }
 
-            DefaultChar = defaultChar;
+        }
+        public virtual FieldCell this[int i, int j]
+        {
+            get
+            {
+                return field[i][j];
+            }
         }
 
 
